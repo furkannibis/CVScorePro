@@ -28,6 +28,35 @@ export async function login_query(username: string, password: string) {
     }
 }
 
+export async function create_new_user(username: string, email: string, password: string, repassword: string) {
+    if (password !== repassword) {
+        return "Passwords do not match!";
+    }
+
+    const requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password
+        })
+    };
+
+    try {
+        const response = await fetch(`${IP}/signup`, requestOptions);
+        if (!response.ok && response.status === 400) {
+            return "Username or password already in use!"
+        }
+        const data = await response.json();
+        return data.content;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return "An error occurred during registration.";
+    }
+}
 
 export async function get_user_info() {
     const tokenValue = localStorage.getItem("token");
