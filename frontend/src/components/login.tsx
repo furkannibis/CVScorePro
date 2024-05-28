@@ -1,23 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login_query } from "../function";
 
 export const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
+
     const [error, setError] = useState("");
     const [showError, setShowError] = useState(false);
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (username === "admin" && password === "password") {
-            setError("");
-            setShowError(false);
-        } else {
-            setError("Unable to log in. Please verify your username and password.");
-            setShowError(true);
-            setTimeout(() => {
-                setShowError(false);
-            }, 2500);
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        try {
+            const result = await login_query(username, password)
+            if (!result) {
+                setError("Unable to log in. Please verify your username and password.");
+                setShowError(true);
+                setTimeout(() => {
+                    setShowError(false);
+                }, 2500);
+            } else {
+                localStorage.setItem("token", result.token);
+                navigate("/home")
+            }
+        } catch (error) {
+            console.error("Error occurded:", error)
         }
     };
     return (
@@ -35,7 +43,7 @@ export const LoginPage = () => {
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={(event) => setUsername(event.target.value)}
                             required
                         />
                         <input
@@ -44,7 +52,7 @@ export const LoginPage = () => {
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(event) => setPassword(event.target.value)}
                             required
                         />
                         <button
