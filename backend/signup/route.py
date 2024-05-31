@@ -17,6 +17,7 @@ async def create_user(payload: SIGNUPFORM):
         curr.execute(ADD_USER, (payload.username, payload.email, hash_data(payload.password),))
         conn.commit()
     except Exception as err:
+        print(err)
         return JSONResponse(content="Username or email already in use!", status_code=status.HTTP_400_BAD_REQUEST)
     finally:
         conn.close()

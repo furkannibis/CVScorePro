@@ -14,6 +14,7 @@ export const LoginPage = () => {
         event.preventDefault();
         try {
             const result = await login_query(username, password)
+
             if (!result) {
                 setError("Unable to log in. Please verify your username and password.");
                 setShowError(true);

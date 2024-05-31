@@ -22,9 +22,7 @@ export async function login_query(username: string, password: string) {
         return data;
     } catch (error) {
         console.error("Error:", error);
-        return {
-            error: "An error occurred while fetching data."
-        };
+        return false;
     }
 }
 
@@ -84,4 +82,26 @@ export async function get_user_info() {
         console.error('There was a problem with the fetch operation:', error);
         throw error;
     }
+}
+
+export async function fetchSuccessMessage(formData: FormData) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    const response = await fetch('http://127.0.0.1:8000/predict', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch success message');
+    }
+
+    const data = await response.json();
+    return data;
 }
