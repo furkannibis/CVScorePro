@@ -24,8 +24,6 @@ Our mission is to connect the right talent with the right opportunities, making 
 
 Join us in transforming the job application process, making it smarter, faster, and more effective. Whether you are a job seeker looking to find the perfect role or an employer aiming to identify the best candidates, CV Score Pro is here to help.
 
-For more information, contributions, or support, visit our [GitHub Repository](https://github.com/yourusername/cv-score-pro).
-
 **Contact**
 
 For inquiries or support, please reach out to Furkan İbiş:
